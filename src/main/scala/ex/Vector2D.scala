@@ -90,3 +90,7 @@ object Vector2D:
   // sum * 3.0 = (6.0, 18.0)
   // (6.0, 18.0) - (1.0, 1.0) = (5.0, 17.0)
   println(s"Multiple Ops: $multipleOps, x: ${multipleOps.x}, y: ${multipleOps.y}")
+
+  val v3 = Vector2D(v1.x, v1.y)
+  println(s"Defined new vector: $v3")
+  println(s"v3 is a copy of v1, are v3 and v1 equals? ${v3 == v1}")
