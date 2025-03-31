@@ -28,7 +28,7 @@ object Vector2D:
   // Factory method to create Vector2D instances
   def apply(x: Double, y: Double): Vector2D = Vector2DImpl(x, y)
 
-  private class Vector2DImpl(override val x: Double,
+  private case class Vector2DImpl(override val x: Double,
                              override val y: Double) extends Vector2D:
     override def +(other: Vector2D): Vector2D = Vector2DImpl(this.x + other.x, this.y + other.y)
 
