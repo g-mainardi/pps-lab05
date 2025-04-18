@@ -1,6 +1,8 @@
 package ex
-import util.Optionals.*
-import util.Sequences.*
+
+import util.*
+import Sequences.*
+import SetADT.*
 
 /*  Exercise 2: 
  *  Implement the below trait, and write a meaningful test.
@@ -111,21 +113,22 @@ object SchoolModel:
        */
       def hasCourse(name: String): Boolean
   object BasicSchoolModule extends SchoolModule:
-    override type School = Nothing
-    override type Teacher = Nothing
-    override type Course = Nothing
+    override opaque type School = Set[(Teacher, Course)]
+    override opaque type Teacher = String
+    override opaque type Course = String
 
-    def teacher(name: String): Teacher = ???
-    def course(name: String): Course = ???
-    def emptySchool: School = ???
+    def teacher(name: String): Teacher = name
+    def course(name: String): Course = name
+    def emptySchool: School = empty
 
     extension (school: School)
-      def courses: Sequence[String] = ???
-      def teachers: Sequence[String] = ???
-      def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
-      def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
-      def hasTeacher(name: String): Boolean = ???
-      def hasCourse(name: String): Boolean = ???
+      def courses: Sequence[String] = (school map(t => t._2)).toSequence
+      def teachers: Sequence[String] = (school map(t => t._1)).toSequence
+      def setTeacherToCourse(teacher: Teacher, course: Course): School = school put (teacher, course)
+      def coursesOfATeacher(teacher: Teacher): Sequence[Course] =
+        (school filter (t => t._1 == teacher)).courses
+      def hasTeacher(name: String): Boolean = teachers contains name
+      def hasCourse(name: String): Boolean = courses contains name
 @main def examples(): Unit =
   import SchoolModel.BasicSchoolModule.*
   val school = emptySchool
