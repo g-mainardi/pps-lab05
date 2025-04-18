@@ -41,6 +41,8 @@ object SetADT:
     def anyMatch(f: A => Boolean): Boolean = s match
       case Cons(h, t) => f(h) || t.anyMatch(f)
       case _ => false
+    def map[B](f: A => B): Set[B] = fromSequence(Sequence.map(s)(f))
+    def filter(f: A => Boolean): Set[A] = Sequence.filter(s)(f)
     def size: Int = Sequence.size(s.toSequence)
 
 @main def trySetADT(): Unit =
