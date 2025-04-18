@@ -12,6 +12,8 @@ object SetADT:
     case Cons(h, t) => Cons(h, fromSequence(t.remove(h)))
     case Nil()      => Nil()
 
+  def empty[A]: Set[A] = Sequence.empty
+
   def union[A](s1: Set[A], s2: Set[A]): Set[A] = s2 match
     case Cons(h, t) => Cons(h, union(s1.remove(h), t))
     case Nil()      => s1
@@ -39,6 +41,7 @@ object SetADT:
     def anyMatch(f: A => Boolean): Boolean = s match
       case Cons(h, t) => f(h) || t.anyMatch(f)
       case _ => false
+    def size: Int = Sequence.size(s.toSequence)
 
 @main def trySetADT(): Unit =
   import SetADT.*
@@ -46,11 +49,11 @@ object SetADT:
   val s2: Set[Int] = fromSequence(Cons(10, Cons(11, Nil())))
   val s3: Set[Int] = s2.put(22)
   // val s3: Set[Int] = Cons(10, Cons(11, Cons(22, Nil()))) // because Set is defined opaque
-  val emptySet: Set[Int] = fromSequence(empty)
+  val emptySet: Set[Int] = empty
   println(s1 allMatch(_ > 0))              // true
   println(s1 allMatch(_ > 10))             // false
   println(emptySet allMatch(_ => true))    // false
-
+  println(s1.size)                         // 3
   println(s1 anyMatch(_ == 10))            // true
   println(s1 anyMatch(_ > 40)  )           // false
   println(emptySet anyMatch(_ => false))   // false
