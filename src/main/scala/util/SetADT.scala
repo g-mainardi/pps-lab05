@@ -32,15 +32,8 @@ object SetADT:
     def remove(a: A): Set[A] = s.filter(_ != a)  
     def toSequence: Sequence[A] = s
     def put(a: A): Set[A] = if contains(a) then s else Cons(a, s)
-    @tailrec
-    def allMatch(f: A => Boolean): Boolean = s match
-      case Cons(h, Nil()) => f(h)
-      case Cons(h, t) => f(h) && t.allMatch(f)
-      case _ => false
-    @tailrec
-    def anyMatch(f: A => Boolean): Boolean = s match
-      case Cons(h, t) => f(h) || t.anyMatch(f)
-      case _ => false
+    def allMatch(f: A => Boolean): Boolean = Sequence.allMatch(s)(f)
+    def anyMatch(f: A => Boolean): Boolean = Sequence.anyMatch(s)(f)
     def map[B](f: A => B): Set[B] = fromSequence(Sequence.map(s)(f))
     def filter(f: A => Boolean): Set[A] = Sequence.filter(s)(f)
     def size: Int = Sequence.size(s.toSequence)

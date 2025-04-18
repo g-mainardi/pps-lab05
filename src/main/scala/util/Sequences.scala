@@ -2,6 +2,8 @@ package util
 import Optionals.Optional.*
 import util.Optionals.Optional
 
+import scala.annotation.tailrec
+
 object Sequences: // Essentially, generic linkedlists
   
   enum Sequence[E]:
@@ -55,6 +57,17 @@ object Sequences: // Essentially, generic linkedlists
       def size: Int = sequence match
         case Cons(_, t) => 1 + t.size
         case _ => 0
+
+      @tailrec
+      def allMatch(f: A => Boolean): Boolean = sequence match
+        case Cons(h, Nil()) => f(h)
+        case Cons(h, t) => f(h) && t.allMatch(f)
+        case _ => false
+
+      @tailrec
+      def anyMatch(f: A => Boolean): Boolean = sequence match
+        case Cons(h, t) => f(h) || t.anyMatch(f)
+        case _ => false
 
 @main def trySequences =
   import Sequences.* 
